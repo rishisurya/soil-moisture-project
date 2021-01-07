@@ -1,0 +1,65 @@
+#Device Libraries
+import sys
+import Adafruit_DHT
+from gpiozero import LED, Button
+from time import sleep
+#Pump is connected to GPIO4 as an LED
+pump = LED(4)
+#DHT Sensor (model type 22) is connected to GPIO17
+sensor = 22
+pin = 17
+#Soil Moisture sensor is connected to GPIO14 as a button
+soil = Button(14)
+#flag variable to toggle between Auto and Manual mode
+flag = 1
+#always make sure the program starts with the pump turned off (conventions are backwards for the pump i.e. .on()=='off' and .off()=='on')
+pump.on()
+
+def presence(self, pubnub, presence):
+        pass  # handle incoming presence data
+ 
+    def message(self, pubnub, message):
+        if message.message == 'ON':
+          global flag
+          flag = 1
+        elif message.message == 'OFF':
+      global flag
+      flag = 0
+        elif message.message == 'WATER':
+          pump.off()
+          sleep(5)
+          pump.on()
+          def get_status():
+  #Soil sensor acts as button. is_held == sensor outputting a 1 for dryness
+  if soil.is_held: 
+    print("dry")
+    return True
+  else:
+    print("wet")
+    return False
+    while True:
+    if flag == 1:
+     #to be implemented
+elif flag == 0:
+     #to be implemented
+     if flag == 1:    
+     # Try to grab a sensor reading.  Use the read_retry method which will retry up
+     # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
+     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+     DHT_Read = ('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+     print(DHT_Read)
+     wet = get_status()
+if wet == True:
+    print("turning on")
+    pump.off()
+    sleep(5)
+    print("pump turning off")
+    pump.on()
+    sleep(1)
+else:
+    pump.on()
+sleep(1)
+elif flag == 0:
+  pump.on()
+  sleep(3)
+    
